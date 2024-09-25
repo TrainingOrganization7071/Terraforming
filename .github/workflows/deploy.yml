@@ -100,6 +100,6 @@ jobs:
 
       # Step 4: Apply the Terraform Plan
       - name: Apply Terraform Plan
-        run: terraform apply -no-color tfplan.plan
+        run: terraform apply #-no-color tfplan.plan
 
 
