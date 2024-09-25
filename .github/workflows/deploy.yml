@@ -92,14 +92,19 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Step 3: Download the Terraform Plan artifact from the plan job
-      - name: Download tfplan.plan
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-plan
+      ## Step 3: Download the Terraform Plan artifact from the plan job
+      #- name: Download tfplan.plan
+      #  uses: actions/download-artifact@v3
+      #  with:
+      #    name: terraform-plan
+
+      # Step 3: Initialize Terraform
+      - name: Terraform Init
+        id: init
+        run: terraform init
 
       # Step 4: Apply the Terraform Plan
       - name: Apply Terraform Plan
-        run: terraform apply #-no-color tfplan.plan
+        run: terraform apply -no-color tfplan.plan
 
 
