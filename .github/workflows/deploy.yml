@@ -19,7 +19,6 @@ on:
       - main
 
 jobs:
-    
   # Terraform Plan Job
   plan:
     runs-on: ubuntu-latest
@@ -34,39 +33,47 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
-      
-      # Step 2: Setup Terraform
+
+      # Step 2: Cache Terraform Plugins
+      - name: Cache Terraform Plugins
+        uses: actions/cache@v3
+        with:
+          path: ~/.terraform.d/plugin-cache
+          key: ${{ runner.os }}-terraform-${{ hashFiles('**/*.tf') }}
+          restore-keys: |
+            ${{ runner.os }}-terraform-
+
+      # Step 3: Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Step 3: Run Terraform formatting check
+      # Step 4: Run Terraform formatting check (Style check)
       - name: Run Terraform fmt check
         id: fmt
         run: terraform fmt -check
-        continue-on-error: true
-      
-      # Step 4: Initialize Terraform
+        continue-on-error: false
+
+      # Step 5: Initialize Terraform
       - name: Terraform Init
         id: init
         run: terraform init
-      
-      # Step 5: Validate Terraform configuration
+
+      # Step 6: Validate Terraform configuration
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
-    
-      # Step 6: Generate Terraform Plan and save it as tfplan.plan
+
+      # Step 7: Generate Terraform Plan and save it as tfplan.plan
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan.plan -no-color
-        continue-on-error: true
 
-      # Step 7: Display the Terraform Plan (optional)
+      # Step 8: Display the Terraform Plan
       - name: Show Terraform Plan
         run: terraform show -no-color tfplan.plan
-      
-      # Step 8: Upload the Terraform Plan as an artifact
-      - name: Upload tfplan artifact
+
+      # Step 9: Upload the Terraform Plan as an artifact
+      - name: Upload Terraform Plan artifact
         uses: actions/upload-artifact@v3
         with:
           name: terraform-plan
@@ -74,7 +81,7 @@ jobs:
 
   # Terraform Apply Job
   apply:
-    needs: plan  
+    needs: plan
     runs-on: ubuntu-latest
 
     env:
@@ -92,19 +99,23 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      ## Step 3: Download the Terraform Plan artifact from the plan job
-      #- name: Download tfplan.plan
-      #  uses: actions/download-artifact@v3
-      #  with:
-      #    name: terraform-plan
-
-      # Step 3: Initialize Terraform
-      - name: Terraform Init
-        id: init
-        run: terraform init
+      # Step 3: Download the Terraform Plan artifact from the plan job
+      - name: Download Terraform Plan artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan
 
       # Step 4: Apply the Terraform Plan
       - name: Apply Terraform Plan
-        run: terraform apply --auto-approve  #-no-color tfplan.plan
+        run: terraform apply --auto-approve -no-color tfplan.plan
+
+      ## Step 3: Initialize Terraform
+      #- name: Terraform Init
+      #  id: init
+      #  run: terraform init
+      
+      ## Step 4: Apply the Terraform Plan
+      #- name: Apply Terraform Plan
+      #  run: terraform apply --auto-approve  #-no-color tfplan.plan
 
 
