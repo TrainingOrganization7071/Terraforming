@@ -1,0 +1,98 @@
+#az ad sp create-for-rbac --name "<Your-SP-Name>" --role contributor --scopes /subscriptions/<Your-Subscription-ID> --sdk-auth
+#{
+#  "clientId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+#  "clientSecret": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+#  "subscriptionId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+#  "tenantId": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+#  ...
+#}
+
+name: Deploy Minimal Infrastructure
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+    
+  # Terraform Plan Job
+  plan:
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      # Step 2: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Step 3: Run Terraform formatting check
+      - name: Run Terraform fmt check
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+      
+      # Step 4: Initialize Terraform
+      - name: Terraform Init
+        id: init
+        run: terraform init
+      
+      # Step 5: Validate Terraform configuration
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+    
+      # Step 6: Generate Terraform Plan and save it as tfplan.plan
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan.plan -no-color
+        continue-on-error: true
+
+      # Step 7: Display the Terraform Plan (optional)
+      - name: Show Terraform Plan
+        run: terraform show -no-color tfplan.plan
+
+  # Terraform Apply Job
+  apply:
+    needs: plan  
+    runs-on: ubuntu-latest
+
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Step 3: Download the Terraform Plan artifact from the plan job
+      - name: Download tfplan.plan
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan
+
+      # Step 4: Apply the Terraform Plan
+      - name: Apply Terraform Plan
+        run: terraform apply -no-color tfplan.plan
+
+

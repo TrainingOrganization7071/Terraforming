@@ -1,0 +1,7 @@
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+backend.tf
+nodejs-app/
+reactjs-app/
+k8s/
