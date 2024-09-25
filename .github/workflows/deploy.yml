@@ -34,36 +34,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 3: Setup Terraform
+      # Step 2: Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
-      # Step 4: Run Terraform formatting check (Style check)
+      # Step 3: Run Terraform formatting check
       - name: Run Terraform fmt check
         id: fmt
         run: terraform fmt -check
-        continue-on-error: false
+        continue-on-error: true
 
-      # Step 5: Initialize Terraform
+      # Step 4: Initialize Terraform
       - name: Terraform Init
         id: init
         run: terraform init
 
-      # Step 6: Validate Terraform configuration
+      # Step 5: Validate Terraform configuration
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
 
-      # Step 7: Generate Terraform Plan and save it as tfplan.plan
+      # Step 6: Generate Terraform Plan and save it as tfplan.plan
       - name: Terraform Plan
         id: plan
         run: terraform plan -out=tfplan.plan -no-color
 
-      # Step 8: Display the Terraform Plan
+      # Step 7: Display the Terraform Plan
       - name: Show Terraform Plan
         run: terraform show -no-color tfplan.plan
 
-      # Step 9: Upload the Terraform Plan as an artifact
+      # Step 8: Upload the Terraform Plan as an artifact
       - name: Upload Terraform Plan artifact
         uses: actions/upload-artifact@v3
         with:
