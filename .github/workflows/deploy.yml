@@ -64,6 +64,13 @@ jobs:
       # Step 7: Display the Terraform Plan (optional)
       - name: Show Terraform Plan
         run: terraform show -no-color tfplan.plan
+      
+      # Step 8: Upload the Terraform Plan as an artifact
+      - name: Upload tfplan artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: terraform-plan
+          path: tfplan.plan
 
   # Terraform Apply Job
   apply:
