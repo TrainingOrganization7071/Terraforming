@@ -98,7 +98,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
   public_network_access_enabled = true
   site_config {
     # Runtime stack for Node.js
-    #linux_fx_version = "NODE|14"
+    linux_fx_version = "NODE|14"
     http2_enabled = true
 
     # Disable always_on to save costs
