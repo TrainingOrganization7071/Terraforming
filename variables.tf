@@ -67,3 +67,23 @@ variable "aks_dns_service_ip" {
   type = string
   description = "DNS Service IP"
 }
+
+
+variable "web_app_name" {
+  type = string
+  description = "Web App Service name / ReactJs"
+}
+
+variable "os_type" {
+  type = string
+  description = "OS type of the web app"
+}
+
+variable "sku_value" {
+  type = string
+  description = ""
+}
+
+variable "worker_count" {
+  type = number
+}

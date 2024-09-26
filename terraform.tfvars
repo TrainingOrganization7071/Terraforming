@@ -18,3 +18,13 @@ network_plugin = "kubenet"
 load_balancer_sku = "standard"
 aks_service_cidr = "10.3.0.0/16"
 aks_dns_service_ip = "10.3.0.10"
+
+
+# Linux Web App Variables
+
+web_app_name = "webapp-frontend"
+os_type = "Linux"
+sku_value = "S1"
+worker_count = 1
+
+
