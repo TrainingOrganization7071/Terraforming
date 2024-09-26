@@ -89,6 +89,7 @@ resource "azurerm_service_plan" "service_plan_web_app" {
 }
 
 resource "azurerm_linux_web_app" "front_web_app" {
+  depends_on = [ azurerm_service_plan.service_plan_web_app ]
   name                = "${var.web_app_name}-${random_string.random.result}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
