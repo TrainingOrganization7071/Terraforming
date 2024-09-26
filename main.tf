@@ -3,7 +3,6 @@ resource "azurerm_resource_group" "rg" {
   location = var.rg_location
 }
 
-/*
 resource "azurerm_virtual_network" "vnet_aks" {
   name                = var.aks_vnet_name
   address_space       = [ var.aks_vnet_address_space ]
@@ -64,10 +63,9 @@ resource "terraform_data" "localexec" {
   }
 }
 
-*/
 
 
-
+/*
 
 resource "random_string" "random" {
   length           = 16
@@ -113,7 +111,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
   }
 }
 
-
+*/
 
 
 
