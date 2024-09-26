@@ -20,7 +20,7 @@ on:
 
 jobs:
   # Terraform Plan Job
-  plan:
+  Plan:
     runs-on: ubuntu-latest
 
     env:
@@ -71,8 +71,8 @@ jobs:
           path: tfplan.plan
 
   # Terraform Apply Job
-  apply:
-    needs: plan
+  Apply:
+    needs: Plan
     runs-on: ubuntu-latest
 
     env:
