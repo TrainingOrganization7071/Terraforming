@@ -78,6 +78,7 @@ resource "random_string" "random" {
 }
 
 resource "azurerm_service_plan" "service_plan_web_app" {
+  depends_on = [ azurerm_resource_group.rg ]
   name                = "${var.web_app_name}-plan"
   resource_group_name = var.rg_name
   location            = var.rg_location
