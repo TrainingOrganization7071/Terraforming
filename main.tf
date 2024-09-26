@@ -86,6 +86,7 @@ resource "azurerm_service_plan" "service_plan_web_app" {
   os_type             = var.os_type
   sku_name            = var.sku_value  
   worker_count = var.worker_count
+  reserved            = true
 }
 
 resource "azurerm_linux_web_app" "front_web_app" {
