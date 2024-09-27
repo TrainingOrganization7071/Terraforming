@@ -50,6 +50,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
+/*
 resource "local_file" "kubeconfig" {
   depends_on = [ azurerm_kubernetes_cluster.aks ]
   content  = azurerm_kubernetes_cluster.aks.kube_config_raw
@@ -62,7 +63,7 @@ resource "terraform_data" "localexec" {
     command = "cat ${path.module}/kube_config > ~/.kube/config"
   }
 }
-
+*/
 
 
 resource "random_string" "random" {
