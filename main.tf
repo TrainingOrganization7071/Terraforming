@@ -65,8 +65,6 @@ resource "terraform_data" "localexec" {
 
 
 
-/*
-
 resource "random_string" "random" {
   length           = 16
   special          = false
@@ -111,7 +109,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
   }
 }
 
-*/
+
 
 
 
