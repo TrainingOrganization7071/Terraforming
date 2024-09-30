@@ -70,6 +70,23 @@ variable "aks_dns_service_ip" {
   description = "DNS Service IP"
 }
 
+variable "dns_zone_name" {
+  type        = string
+  default     = null
+  description = "Name of the DNS zone."
+}
+
+variable "dns_ttl" {
+  type        = number
+  default     = 3600
+  description = "Time To Live (TTL) of the DNS record (in seconds)."
+}
+
+variable "dns_records" {
+  type        = list(string)
+  default     = ["1.2.3.4", "1.2.3.5"]
+  description = "List of IPv4 addresses."
+}
 
 # API ---------------------
 
