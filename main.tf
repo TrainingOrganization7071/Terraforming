@@ -65,12 +65,51 @@ resource "terraform_data" "localexec" {
   }
 }
 
+# Subnet for APIM
+resource "azurerm_subnet" "apim_subnet" {
+  name                 = var.apim_subnet_name
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.vnet_backend.name
+  address_prefixes     = [var.apim_subnet_cidr]
 
+  # Required for API Management to be in internal mode
+  delegation {
+    name = "delegation"
+    service_delegation {
+      name = "Microsoft.ApiManagement/service"
+    }
+  }
+}
 
+resource "random_string" "randomapim" {
+  length           = 16
+  special          = false
+  lower   = true
+  numeric = false
+  upper   = false
+}
 
+resource "azurerm_api_management" "apim" {
+  name                = "${var.apim_name}-${random_string.randomapim.result}"
+  location            = var.rg_location
+  resource_group_name = var.rg_name
+  publisher_name      = var.publisher_name
+  publisher_email     = var.publisher_email
+  sku_name            = "${var.sku}_${var.sku_count}"  # Use Developer tier for cost savings
 
+  # VNET integration for API Management (Internal Mode)
+  virtual_network_configuration {
+    subnet_id = azurerm_subnet.apim_subnet.id
+  }
+  
+  identity {
+    type = "SystemAssigned"
+  }
 
-
+  # Set API Management to only be accessible via VNET
+    # Initially enable public network access
+  public_network_access_enabled = true
+}
 
 /*
 resource "random_string" "random" {
