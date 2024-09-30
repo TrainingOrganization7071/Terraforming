@@ -106,6 +106,7 @@ resource "random_string" "azurerm_dns_zone_name" {
 }
 
 resource "azurerm_dns_zone" "dns-public" {
+  depends_on = [ azurerm_kubernetes_cluster.aks ]
   #name                = "apinostrada.com"
   name                =(
     var.dns_zone_name != null ?
@@ -182,7 +183,7 @@ resource "random_string" "random" {
 }
 
 resource "azurerm_service_plan" "service_plan_web_app" {
-  depends_on = [ azurerm_resource_group.rg ]
+  depends_on = [ azurerm_kubernetes_cluster.aks ]
   name                = "${var.web_app_name}-plan"
   resource_group_name = var.rg_name
   location            = var.rg_location
