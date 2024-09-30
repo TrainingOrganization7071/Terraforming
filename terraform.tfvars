@@ -19,6 +19,18 @@ load_balancer_sku = "standard"
 aks_service_cidr = "10.3.0.0/16"
 aks_dns_service_ip = "10.3.0.10"
 
+# API Management Variables
+
+apim_subnet_name = "apim-subnet"
+apim_subnet_cidr = "10.1.1.0/24"
+
+apim_name = "apim-communication"
+publisher_email = "test@contoso.com"
+publisher_name = "publisher01"
+sku = "Developer"
+sku_count = 1
+
+apim_api_name = "api-com"
 
 # Linux Web App Variables
 

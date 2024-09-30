@@ -11,12 +11,12 @@ name: Deploy Minimal Infrastructure
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - main
+#  push:
+#    branches:
+#      - master
+#  pull_request:
+#    branches:
+#      - master
 
 jobs:
   # Terraform Plan Job

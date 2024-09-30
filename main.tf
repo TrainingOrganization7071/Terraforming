@@ -51,7 +51,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 #az aks get-credentials --resource-group minimal_infra_auth --name aks_back
-/*
+
 resource "local_file" "kubeconfig" {
   depends_on = [ azurerm_kubernetes_cluster.aks ]
   content  = azurerm_kubernetes_cluster.aks.kube_config_raw
@@ -64,8 +64,15 @@ resource "terraform_data" "localexec" {
     command = "cat ${path.module}/kube_config > ~/.kube/config"
   }
 }
-*/
 
+
+
+
+
+
+
+
+/*
 resource "random_string" "random" {
   length           = 16
   special          = false
@@ -109,7 +116,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
     WEBSITE_NODE_DEFAULT_VERSION        = "14.17.0"
   }
 }
-
+*/
 
 
 
