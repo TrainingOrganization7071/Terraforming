@@ -73,9 +73,12 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
-
-
-
+# Assign the Network Contributor role to the AKS system-assigned identity
+resource "azurerm_role_assignment" "aks_network_contributor" {
+  principal_id   = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+  role_definition_name = "Network Contributor"
+  scope          = azurerm_virtual_network.vnet_aks.id
+}
 
 #az aks get-credentials --resource-group minimal_infra_auth --name aks_back
 
@@ -92,6 +95,7 @@ resource "terraform_data" "localexec" {
   }
 }
 
+/*
 # Subnet for APIM
 resource "azurerm_subnet" "apim_subnet" {
   name                 = var.apim_subnet_name
@@ -107,7 +111,7 @@ resource "azurerm_subnet" "apim_subnet" {
     }
   }
 }
-/*
+
 resource "random_string" "randomapim" {
   length           = 16
   special          = false
@@ -138,8 +142,8 @@ resource "azurerm_api_management" "apim" {
     # Initially enable public network access
   public_network_access_enabled = true
 }
+*/
 
-/*
 resource "random_string" "random" {
   length           = 16
   special          = false
@@ -183,7 +187,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
     WEBSITE_NODE_DEFAULT_VERSION        = "14.17.0"
   }
 }
-*/
+
 
 
 
