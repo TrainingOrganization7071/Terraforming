@@ -50,6 +50,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 }
 
+#az aks get-credentials --resource-group minimal_infra_auth --name aks_back
 /*
 resource "local_file" "kubeconfig" {
   depends_on = [ azurerm_kubernetes_cluster.aks ]
@@ -64,7 +65,6 @@ resource "terraform_data" "localexec" {
   }
 }
 */
-
 
 resource "random_string" "random" {
   length           = 16
@@ -109,6 +109,27 @@ resource "azurerm_linux_web_app" "front_web_app" {
     WEBSITE_NODE_DEFAULT_VERSION        = "14.17.0"
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
