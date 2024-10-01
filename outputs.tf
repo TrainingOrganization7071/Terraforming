@@ -10,7 +10,7 @@ output "web_app_url" {
   description = "The URL of the Linux Web App"
   value       = azurerm_linux_web_app.front_web_app.default_hostname
 }
-*/
+
 
 
 
@@ -22,7 +22,7 @@ output "name_servers" {
   value = azurerm_dns_zone.dns-public.name_servers
 }
 
-
+*/
 
 
 
