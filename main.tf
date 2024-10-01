@@ -138,8 +138,8 @@ resource "random_string" "random" {
 resource "azurerm_service_plan" "service_plan_web_app" {
   depends_on = [ azurerm_kubernetes_cluster.aks ]
   name                = "${var.web_app_name}-plan"
-  resource_group_name = var.rg_name
-  location            = var.rg_location
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
   per_site_scaling_enabled = false
   os_type             = var.os_type
   sku_name            = var.sku_value  
@@ -176,7 +176,7 @@ resource "azurerm_linux_web_app" "front_web_app" {
 
 resource "azurerm_subnet" "apim_subnet" {
   name                 = var.apim_subnet_name
-  resource_group_name  = var.rg_name
+  resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet_aks.name
   address_prefixes     = [var.apim_subnet_cidr]
 
@@ -200,8 +200,8 @@ resource "random_string" "randomapim" {
 resource "azurerm_api_management" "apim" {
   depends_on = [ azurerm_linux_web_app.front_web_app ]
   name                = "${var.apim_name}-${random_string.randomapim.result}"
-  location            = var.rg_location
-  resource_group_name = var.rg_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
   publisher_name      = var.publisher_name
   publisher_email     = var.publisher_email
   sku_name            = "${var.sku}_${var.sku_count}"  # Use Developer tier for cost savings
