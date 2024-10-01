@@ -198,7 +198,7 @@ resource "random_string" "randomapim" {
 }
 
 resource "azurerm_api_management" "apim" {
-  depends_on = [ azurerm_kubernetes_cluster.aks ]
+  depends_on = [ azurerm_linux_web_app.front_web_app ]
   name                = "${var.apim_name}-${random_string.randomapim.result}"
   location            = var.rg_location
   resource_group_name = var.rg_name
