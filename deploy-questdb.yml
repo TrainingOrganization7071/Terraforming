@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: questdb-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: questdb
+  template:
+    metadata:
+      labels:
+        app: questdb
+    spec:
+      containers:
+      - name: questdb
+        image: questdb/questdb
+        ports:
+        - containerPort: 9000
+        - containerPort: 8812
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: questdb-service
+spec:
+  selector:
+    app: questdb
+  ports:
+  - name: http
+    protocol: TCP
+    port: 9000
+    targetPort: 9000
+  - name: tcp
+    protocol: TCP
+    port: 8812
+    targetPort: 8812
+  type: LoadBalancer  # You can also use NodePort depending on your cluster setup.
