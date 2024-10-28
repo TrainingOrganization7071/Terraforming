@@ -40,7 +40,7 @@ resource "azurerm_api_management" "apim" {
   public_network_access_enabled = true # false applies only when using private endpoint as the exclusive access method
 }
 
-resource "azurerm_api_management_api" "api" {
+resource "azurerm_api_management_api" "apiexample" {
   name                = var.apim_api_name
   resource_group_name = azurerm_resource_group.rg.name
   api_management_name = azurerm_api_management.apim.name
